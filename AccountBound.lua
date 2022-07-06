@@ -10,6 +10,14 @@ AuthDBQuery('CREATE TABLE IF NOT EXISTS `'..Config.Database..'`.`account_bound_m
 local Event          = {
     OnLogin          = 3,
     OnLearnSpell     = 44,
+    OnAchiComplete   = 45,
+}
+
+local Achievement = {
+    Apprentice    = 891,
+    Journeyman    = 889,
+    Expert        = 890,
+    Artisan       = 892,
 }
 
 local Companions = {
@@ -675,6 +683,14 @@ local function OnLearnSpell(event, player, spellId)
     end
 end
 RegisterPlayerEvent(Event.OnLearnSpell, OnLearnSpell)
+
+local function OnAchiComplete(event, player, achievement)
+    local id = achievement:GetId()
+    if (id == Achievement.Apprentice or id == Achievement.Journeyman or id == Achievement.Expert or id == Achievement.Artisan) then
+        player:LearnBoundMounts()
+    end
+end
+RegisterPlayerEvent(Event.OnAchiComplete, OnAchiComplete)
 
 local function OnLogin(event, player)
     if (player:GetGMRank() == 0 or Config.EnableGamemaster) then
